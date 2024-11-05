@@ -1,6 +1,6 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { NavItem } from "@/components/ui/sidebar";
-import { Workflow } from "lucide-react";
+import { Workflow, Cpu } from "lucide-react";
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
 	return (
@@ -19,6 +19,13 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
 									activeOptions={{ exact: true }}
 								>
 									Flows
+								</NavItem>
+								<NavItem
+									to="/work-pools"
+									icon={<Cpu className="mr-2 h-4 w-4" />}
+									activeOptions={{ exact: true }}
+								>
+									Work pools
 								</NavItem>
 							</nav>
 						</ScrollArea>

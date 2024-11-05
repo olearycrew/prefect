@@ -10,85 +10,132 @@
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as FlowsFlowIdImport } from "./routes/flows/flow.$id";
-import { Route as FlowsIndexImport } from "./routes/flows/index";
+import { Route as rootRoute } from './routes/__root'
+import { Route as WorkPoolsIndexImport } from './routes/work-pools/index'
+import { Route as FlowsIndexImport } from './routes/flows/index'
+import { Route as WorkPoolsWorkPoolIdImport } from './routes/work-pools/work-pool.$id'
+import { Route as FlowsFlowIdImport } from './routes/flows/flow.$id'
 
 // Create/Update Routes
 
+const WorkPoolsIndexRoute = WorkPoolsIndexImport.update({
+  id: '/work-pools/',
+  path: '/work-pools/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const FlowsIndexRoute = FlowsIndexImport.update({
-	id: "/flows/",
-	path: "/flows/",
-	getParentRoute: () => rootRoute,
-} as any);
+  id: '/flows/',
+  path: '/flows/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const WorkPoolsWorkPoolIdRoute = WorkPoolsWorkPoolIdImport.update({
+  id: '/work-pools/work-pool/$id',
+  path: '/work-pools/work-pool/$id',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const FlowsFlowIdRoute = FlowsFlowIdImport.update({
-	id: "/flows/flow/$id",
-	path: "/flows/flow/$id",
-	getParentRoute: () => rootRoute,
-} as any);
+  id: '/flows/flow/$id',
+  path: '/flows/flow/$id',
+  getParentRoute: () => rootRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
-	interface FileRoutesByPath {
-		"/flows/": {
-			id: "/flows/";
-			path: "/flows";
-			fullPath: "/flows";
-			preLoaderRoute: typeof FlowsIndexImport;
-			parentRoute: typeof rootRoute;
-		};
-		"/flows/flow/$id": {
-			id: "/flows/flow/$id";
-			path: "/flows/flow/$id";
-			fullPath: "/flows/flow/$id";
-			preLoaderRoute: typeof FlowsFlowIdImport;
-			parentRoute: typeof rootRoute;
-		};
-	}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/flows/': {
+      id: '/flows/'
+      path: '/flows'
+      fullPath: '/flows'
+      preLoaderRoute: typeof FlowsIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/work-pools/': {
+      id: '/work-pools/'
+      path: '/work-pools'
+      fullPath: '/work-pools'
+      preLoaderRoute: typeof WorkPoolsIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/flows/flow/$id': {
+      id: '/flows/flow/$id'
+      path: '/flows/flow/$id'
+      fullPath: '/flows/flow/$id'
+      preLoaderRoute: typeof FlowsFlowIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/work-pools/work-pool/$id': {
+      id: '/work-pools/work-pool/$id'
+      path: '/work-pools/work-pool/$id'
+      fullPath: '/work-pools/work-pool/$id'
+      preLoaderRoute: typeof WorkPoolsWorkPoolIdImport
+      parentRoute: typeof rootRoute
+    }
+  }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-	"/flows": typeof FlowsIndexRoute;
-	"/flows/flow/$id": typeof FlowsFlowIdRoute;
+  '/flows': typeof FlowsIndexRoute
+  '/work-pools': typeof WorkPoolsIndexRoute
+  '/flows/flow/$id': typeof FlowsFlowIdRoute
+  '/work-pools/work-pool/$id': typeof WorkPoolsWorkPoolIdRoute
 }
 
 export interface FileRoutesByTo {
-	"/flows": typeof FlowsIndexRoute;
-	"/flows/flow/$id": typeof FlowsFlowIdRoute;
+  '/flows': typeof FlowsIndexRoute
+  '/work-pools': typeof WorkPoolsIndexRoute
+  '/flows/flow/$id': typeof FlowsFlowIdRoute
+  '/work-pools/work-pool/$id': typeof WorkPoolsWorkPoolIdRoute
 }
 
 export interface FileRoutesById {
-	__root__: typeof rootRoute;
-	"/flows/": typeof FlowsIndexRoute;
-	"/flows/flow/$id": typeof FlowsFlowIdRoute;
+  __root__: typeof rootRoute
+  '/flows/': typeof FlowsIndexRoute
+  '/work-pools/': typeof WorkPoolsIndexRoute
+  '/flows/flow/$id': typeof FlowsFlowIdRoute
+  '/work-pools/work-pool/$id': typeof WorkPoolsWorkPoolIdRoute
 }
 
 export interface FileRouteTypes {
-	fileRoutesByFullPath: FileRoutesByFullPath;
-	fullPaths: "/flows" | "/flows/flow/$id";
-	fileRoutesByTo: FileRoutesByTo;
-	to: "/flows" | "/flows/flow/$id";
-	id: "__root__" | "/flows/" | "/flows/flow/$id";
-	fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/flows'
+    | '/work-pools'
+    | '/flows/flow/$id'
+    | '/work-pools/work-pool/$id'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/flows' | '/work-pools' | '/flows/flow/$id' | '/work-pools/work-pool/$id'
+  id:
+    | '__root__'
+    | '/flows/'
+    | '/work-pools/'
+    | '/flows/flow/$id'
+    | '/work-pools/work-pool/$id'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-	FlowsIndexRoute: typeof FlowsIndexRoute;
-	FlowsFlowIdRoute: typeof FlowsFlowIdRoute;
+  FlowsIndexRoute: typeof FlowsIndexRoute
+  WorkPoolsIndexRoute: typeof WorkPoolsIndexRoute
+  FlowsFlowIdRoute: typeof FlowsFlowIdRoute
+  WorkPoolsWorkPoolIdRoute: typeof WorkPoolsWorkPoolIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-	FlowsIndexRoute: FlowsIndexRoute,
-	FlowsFlowIdRoute: FlowsFlowIdRoute,
-};
+  FlowsIndexRoute: FlowsIndexRoute,
+  WorkPoolsIndexRoute: WorkPoolsIndexRoute,
+  FlowsFlowIdRoute: FlowsFlowIdRoute,
+  WorkPoolsWorkPoolIdRoute: WorkPoolsWorkPoolIdRoute,
+}
 
 export const routeTree = rootRoute
-	._addFileChildren(rootRouteChildren)
-	._addFileTypes<FileRouteTypes>();
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* ROUTE_MANIFEST_START
 {
@@ -97,14 +144,22 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/flows/",
-        "/flows/flow/$id"
+        "/work-pools/",
+        "/flows/flow/$id",
+        "/work-pools/work-pool/$id"
       ]
     },
     "/flows/": {
       "filePath": "flows/index.tsx"
     },
+    "/work-pools/": {
+      "filePath": "work-pools/index.tsx"
+    },
     "/flows/flow/$id": {
       "filePath": "flows/flow.$id.tsx"
+    },
+    "/work-pools/work-pool/$id": {
+      "filePath": "work-pools/work-pool.$id.tsx"
     }
   }
 }
